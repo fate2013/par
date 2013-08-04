@@ -15,11 +15,14 @@ An extension of Yii ORM to support partition tables.
 
 Controller
 
-public function actionTest()
+class IndexController extends Controller
 {
-    $test = new Test(array('url'=>'http://www.baidu.com'));
-    $test->name='a test name';
-    $test->save()
+    public function actionTest()
+    {
+        $test = new Test(array('url'=>'http://www.baidu.com'));
+        $test->name='a test name';
+        $test->save()
+    }
 }
 
 Model
