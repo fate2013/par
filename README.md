@@ -42,7 +42,8 @@ class Test extends Par
 }
 
 
-源码：
+源码
+===
 
 class Par extends CActiveRecord
 {
