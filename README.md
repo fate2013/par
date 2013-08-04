@@ -15,6 +15,7 @@ An extension of Yii ORM to support partition tables.
 
 Controller
 
+<?php
 class IndexController extends Controller
 {
     public function actionTest()
