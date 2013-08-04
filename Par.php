@@ -5,6 +5,11 @@ class Par extends CActiveRecord
     protected $hashnum = 10;
     protected $_key;
 
+    /**
+     * Constructor.
+     * @param array $entry=array($key=>$value) key is the partition field name.
+     * @param array $opts some optitions: hash_num=>the hash num default 10.
+     */
     public function __construct($entry = array(), array $opts = null){
         if($entry === null){
             return;
@@ -13,7 +18,7 @@ class Par extends CActiveRecord
             $key = key($entry);
             $value = $entry[$key];
             $this->_key = $key;
-            static::$tablename .= $this->getHashTablename($value);
+            static::$tablename .= '_'.$this->getHashTablename($value);
         }
         if(isset($opts['hash_num'])){
             $this->hashnum = $opts['hash_num'];
@@ -31,6 +36,7 @@ class Par extends CActiveRecord
         return static::$tablename;
     }
 
+    //根据字符串hash到十进制，计算表hash值
     protected function getHashTablename($key){
         $str = base_convert(md5($key),16, 10);
         $key_hash = substr($str, strlen($str)-1, 1);
