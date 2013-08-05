@@ -58,7 +58,7 @@ class Par extends CActiveRecord
             $table_hash = $key_hash % $this->hashnum;
             break;
         case self::DATE_HASH:
-            $table_hash = date('Y-m');
+            $table_hash = date('Y_m');
             break;
         default:
             break;
