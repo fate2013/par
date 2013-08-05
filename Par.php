@@ -1,8 +1,13 @@
 <?php
 class Par extends CActiveRecord
 {
-    protected static $tablename = 'mars';
+    const STRING_HASH = 1;
+    const DATE_HASH = 2;
+
+    protected static $tablename = 'pars';
     protected $hashnum = 10;
+    protected $hashtype = self::STRING_HASH;
+
     protected $_key;
 
     /**
@@ -14,26 +19,31 @@ class Par extends CActiveRecord
         if($entry === null){
             return;
         }
+        $this->parseParams($entry, $opts);
+        parent::__construct();
+    }
+
+    public static function model($entry = array(), array $opts = null, $className=__CLASS__)
+    {
+        $model = new $className($entry, $opts);
+        return $model;
+    }
+
+    public function tableName()
+    {
+        return static::$tablename;
+    }
+
+    protected function parseParams($entry, $opts){
+        if(isset($opts['hash_num'])){
+            $this->hashnum = $opts['hash_num'];
+        }
         if(!empty($entry)){
             $key = key($entry);
             $value = $entry[$key];
             $this->_key = $key;
             static::$tablename .= '_'.$this->getHashTablename($value);
         }
-        if(isset($opts['hash_num'])){
-            $this->hashnum = $opts['hash_num'];
-        }
-        parent::__construct();
-    }
-
-    public static function model($className=__CLASS__)
-    {
-        return parent::model($className);
-    }
-
-    public function tableName()
-    {
-        return static::$tablename;
     }
 
     //根据字符串hash到十进制，计算表hash值
