@@ -19,7 +19,7 @@ Controller
     {
         public function actionTest()
         {
-            $test = new Test(array('url'=>'http://www.baidu.com'));
+            $test = new Test();
             $test->name='a test name';
             $test->save();
             
@@ -37,10 +37,11 @@ Model
     {
         public static $tablename = 'test';    //未分表前的表名
         
-        public static function model($entry = array(), array $opts = null, $className=__CLASS__)
+        public static function model($opts = null, $entry = array(), $className=__CLASS__)
         {
-            return parent::model($entry, $opts, $className);
+            return parent::model($opts, $entry, $className);
         }
+
 
     
         public function rules()
