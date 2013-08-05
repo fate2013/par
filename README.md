@@ -21,7 +21,13 @@ Controller
         {
             $test = new Test(array('url'=>'http://www.baidu.com'));
             $test->name='a test name';
-            $test->save()
+            $test->save();
+            
+            {{or}}
+            
+            $test = Test::model()->findByPk(3);
+            var_dump($test->name);
+
         }
     }
 
@@ -31,10 +37,11 @@ Model
     {
         public static $tablename = 'test';    //未分表前的表名
         
-        public static function model($className=__CLASS__)
+        public static function model($entry = array(), array $opts = null, $className=__CLASS__)
         {
-            return parent::model($className);
+            return parent::model($entry, $opts, $className);
         }
+
     
         public function rules()
         {
