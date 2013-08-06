@@ -23,7 +23,7 @@ class Par extends CActiveRecord
         parent::__construct();
     }
 
-    public static function model($opts = null, $entry = array(), $className=__CLASS__)
+    public static function model($opts = array(), $entry = array(), $className=__CLASS__)
     {
         $model = new $className($opts, $entry);
         return $model;
