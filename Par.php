@@ -1,9 +1,12 @@
 <?php
 class Par extends CActiveRecord
 {
+    const NO_HASH = 0;
     const STRING_HASH = 1;
     const DATE_HASH = 2;
+    const FIXED_HASH = 3;
 
+    protected static $otablename = 'pars';
     protected static $tablename = 'pars';
     protected $hashnum = 10;
     protected $hashtype = self::DATE_HASH;
@@ -16,10 +19,20 @@ class Par extends CActiveRecord
      * @param array $opts some optitions: hash_num=>the hash num default 10.
      */
     public function __construct($opts = array(), $entry = array()){
+        static::$tablename = static::$otablename;
         if($opts === null){
             return;
         }
-        $this->parseParams($opts, $entry);
+        if(!isset($opts['hash_type']) || $opts['hash_type']!=self::NO_HASH){
+            $this->parseParams($opts, $entry);
+        }
+        $tablename = static::$tablename;
+        //$this->refreshMetaData();
+        //var_dump($this->getMetaData()->tableSchema->name);
+        $this->getMetaData()->tableSchema->name = $tablename;
+        $this->getMetaData()->tableSchema->rawName = $tablename;
+        static::$tablename = $tablename;
+
         parent::__construct();
     }
 
@@ -58,7 +71,14 @@ class Par extends CActiveRecord
             $table_hash = $key_hash % $this->hashnum;
             break;
         case self::DATE_HASH:
-            $table_hash = date('Y_m');
+            if($this->_key){
+                $table_hash = str_replace('-', '_', $this->_key);
+            } else {
+                $table_hash = date('Y_m');
+            }
+            break;
+        case self::FIXED_HASH:
+            $table_hash = $this->_key;
             break;
         default:
             break;
